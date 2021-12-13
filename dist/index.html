@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,13 +8,38 @@
     <link rel="stylesheet" href="/dist/css/main.css">
     <title>Морской Бой</title>
 </head>
+
 <body>
     <div class="wrapper">
-        <div class="wrapper-list-ships"></div>
-        <div id="field-wrap"><h2>Ваш флот</h2><div id="player-field"></div>
+        <div class="wrapper-list-ships">
+            <ul class="ship-list">
+                <li id="linkor">Четырехпалубник</li>
+                <li id="fregat-1">Трехпалубник</li>
+                <li id="fregat-2">Трехпалубник</li>
+                <li id="galera-1">Двухпалубник</li>
+                <li id="galera-2">Двухпалубник</li>
+                <li id="galera-3">Двухпалубник</li>
+                <li id="kater-1">Однопалубник</li>
+                <li id="kater-2">Однопалубник</li>
+                <li id="kater-3">Однопалубник</li>
+                <li id="kater-4">Однопалубник</li>
+            </ul>
+            <button id=start-game>Начать Игру</button>
         </div>
-        <div id="field-wrap"><h2>Флот противника</h2><div id="computer-field"></div></div>
+
+        <div class="field">
+            <h2>Ваш флот</h2>
+            <div id="player-grid"></div>
+        </div>
+
+        <div class="field">
+            <h2>Флот противника</h2>
+            <div id="computer-grid"></div>
+        </div>
+
         <canvas id="canvas"></canvas>
+
     </div>
 </body>
+
 </html>

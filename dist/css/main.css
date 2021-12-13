@@ -1,2 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
 body {
-  margin: 0; }
+  background-color: bisque; }
+
+.wrapper {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  gap: 20px; }
+  .wrapper .wrapper-list-ships {
+    margin: 20px;
+    height: 400px;
+    width: 200px;
+    border: 1px solid red;
+    line-height: 2rem;
+    padding: 10px;
+    text-align: center; }
+    .wrapper .wrapper-list-ships .ship-list {
+      padding: 20px 20px 0 20px; }
+      .wrapper .wrapper-list-ships .ship-list li {
+        list-style: none; }
+      .wrapper .wrapper-list-ships .ship-list:hover {
+        cursor: pointer; }
+  .wrapper #start-game {
+    padding: 3px 10px;
+    border-radius: 5px;
+    background-color: red; }
+    .wrapper #start-game:hover {
+      cursor: pointer;
+      background-color: green; }
+  .wrapper .field {
+    width: 400px;
+    height: 400px;
+    border: 2px solid black;
+    margin: 20px;
+    background-color: black; }
