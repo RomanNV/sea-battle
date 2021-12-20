@@ -33,8 +33,21 @@ body {
       cursor: pointer;
       background-color: green; }
   .wrapper .field {
-    width: 400px;
-    height: 400px;
-    border: 2px solid black;
-    margin: 20px;
-    background-color: black; }
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px; }
+    .wrapper .field h2 {
+      display: block; }
+    .wrapper .field .grid {
+      display: flex;
+      background-color: #0099ff;
+      width: 400px;
+      height: 400px;
+      flex-wrap: wrap; }
+      .wrapper .field .grid .cell {
+        display: inline-block;
+        height: 38px;
+        width: 38px;
+        margin: 1px;
+        background-color: #fff; }
