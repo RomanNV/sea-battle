@@ -1,15 +1,26 @@
 import Data from './data.js';
-import Field from './fields.js'
+import Field from './fields.js';
+import Ship from './ship.js';
+import Flot from './flot.js';
 
 //загрузка служебных файлов
 let data = new Data();
-data.setInLocalStorage();
+
 class Game {
     constructor() {
         this.size = 10;
+        this.playerField = localStorage.getItem('player');
+        this.computerField = localStorage.getItem('computer');
         this.fieldPlayer = new Field(this.size);
         this.fieldComputer = new Field(this.size);
+        // this.playerFlot = new Flot();
+        this.insertDivOnField();
+        // this.ship = new Ship();
+        
+
+
     }
+    //разобьем поле боя на клетки с координатами x и y
     insertDivOnField() {
         document.querySelectorAll('.grid').forEach((field) => {
             for (let i = 0; i < this.size; i++) {
@@ -23,9 +34,32 @@ class Game {
             }
         })
     }
+    
+    // getShipOnClick() {
+    //     let shipList = document.querySelectorAll('li');
+    //     shipList.forEach((elem) => {
+    //         elem.addEventListener('click', (event) => {
+    //             return new Ship(event.getAttribute('id'))
+    //         })
+
+    //     })
+    // }
+
+    // mouseClickOnShipHandler(event) {
+
+
+    // }
+
+
+
+
+
 
 }
 
 
+
 let game = new Game();
-game.insertDivOnField()
+
+
+export default Game;

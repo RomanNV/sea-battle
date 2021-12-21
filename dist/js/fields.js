@@ -1,11 +1,11 @@
-'use strict'
-
+'use strict';
 class Field {
     constructor(size) {
         this.size = size
         this.cells = []
         console.log(this.cells)
         this.init()
+
 
     }
     init() {
@@ -18,6 +18,7 @@ class Field {
         }
 
     }
+
 }
 
 export default Field;
