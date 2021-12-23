@@ -1,5 +1,6 @@
 class Data {
     dataGame = {
+        blockedCell:-1,
         emptyCell: 0,
         missCell: 1,
         shipCell: 2,
@@ -22,8 +23,8 @@ class Data {
         this.setInLocalStorage();
         this.addShipList()
     }
-
-    addShipList() {
+// записываем в localStorage массив кораблей
+    addShipList() { 
         let shipList = document.querySelectorAll('li');
         shipList = [].slice.call(shipList).map(elem => {
             return elem.getAttribute('id');
