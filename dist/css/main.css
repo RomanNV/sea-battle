@@ -11,6 +11,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 2fr 2fr;
   gap: 20px; }
+
   .wrapper .wrapper-list-ships {
     margin: 20px;
     height: 440px;
@@ -19,12 +20,16 @@ body {
     line-height: 2rem;
     padding: 10px;
     text-align: center; }
+
     .wrapper .wrapper-list-ships .ship-list {
       padding: 20px 20px 0 20px; }
+
       .wrapper .wrapper-list-ships .ship-list li {
         list-style: none; }
+
       .wrapper .wrapper-list-ships .ship-list:hover {
         cursor: pointer; }
+        
   .wrapper #start-game {
     padding: 3px 10px;
     border-radius: 5px;
@@ -58,5 +63,9 @@ body {
         width: 38px;
         margin: 1px;
         background-color: #fff; }
+      .wrapper .field .grid .placed-ship {
+        background-color: cadetblue; }
+      .wrapper .field .grid .field-ship {
+        background-color: lightblue; }
     .wrapper .field .computer-grid .cell:hover {
       background-color: cadetblue; }

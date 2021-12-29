@@ -3,10 +3,9 @@ class Field {
     constructor(size) {
         this.size = size
         this.cells = []
-        console.log(this.cells)
+
         this.init()
-
-
+        console.log(this.cells, 'sss')
     }
     init() {
         for (let i = 0; i < this.size; i++) {
@@ -16,9 +15,19 @@ class Field {
                 row.push(localStorage.getItem('emptyCell'))
             }
         }
+      
 
+    }
+    updateCell(x, y, type, player) {
+        if (type === 'ship') {
+            this.cells[y][x] = localStorage.getItem('shipCell');
+        }
+        document.querySelector(`[x="${x}"][y="${y}"]`).classList.add(`field-${type}`);
+        document.querySelector(`[x="${x}"][y="${y}"]`).classList.remove('placed-ship');
+        console.log(this.cells)
     }
 
 }
+
 
 export default Field;

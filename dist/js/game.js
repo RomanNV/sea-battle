@@ -7,8 +7,7 @@ import Flot from './flot.js';
 let data = new Data();
 
 class Game {
-    placingShipType = ''
-    plaseShipOnGrid = false
+
 
     constructor() {
         this.size = 10;
@@ -16,10 +15,14 @@ class Game {
         this.computerField = localStorage.getItem('computer');
         this.fieldPlayer = new Field(this.size);
         this.fieldComputer = new Field(this.size);
-        this.playerFlot = new Flot();
+        this.playerFlot = new Flot(this.fieldPlayer, this.playerField);
+        this.placeShipOnField = false;
         this.insertDivOnField();
-        this.ship = new Ship();
         this.init();
+        this.direction_1 = 0;
+
+
+
 
 
 
@@ -30,8 +33,8 @@ class Game {
             for (let i = 0; i < this.size; i++) {
                 for (let j = 0; j < this.size; j++) {
                     let divCell = document.createElement('div');
-                    divCell.setAttribute('x', i);
-                    divCell.setAttribute('y', j)
+                    divCell.setAttribute('x', j)
+                    divCell.setAttribute('y', i);
                     divCell.className = 'cell';
                     field.appendChild(divCell);
                 }
@@ -47,40 +50,114 @@ class Game {
         })
         Game.placingShipType = event.target.getAttribute('id');
         document.querySelector(`#${Game.placingShipType}`).classList.add('placing');
-        Game.plaseShipDirection = parseInt(document.querySelector('.direction').getAttribute('data-direction'), 10);
-        Game.plaseShipOnGrid = true;
-        console.log(Game.plaseShipOnGrid);
+        this.placeShipOnField = true;
+
 
     }
-    //метод для изменения data-direction в методе 
-    rotateShip(event) {
-        let dataDirection = event.target.getAttribute('data-direction');
-        if (dataDirection == 0) {
-            event.target.setAttribute('data-direction', 1);
-        } else {
-            event.target.setAttribute('data-direction', 0)
+    //метод для изменения data-direction в методе подключим к кнопке
+   
 
-        }
-
-    }
-    //метод для отрисовки кораблся при наведении на поле боя при расстановке корабля 
+    //метод для отрисовки корабля при наведении на поле боя при расстановке корабля 
     positioningMouseoverHandler(event) {
-        if (Game.plaseShipOnGrid) {
-            const x = parseInt(event.target.getAttribute('data-x'), 10);
-            const y = parseInt(event.target.getAttribute('data-y'), 10);
-            const fleetList = this.playerFlot.fleetList;
-        }
+        if (this.placeShipOnField) {
+            const x = parseInt(event.target.getAttribute('x'), 10);
 
+            const y = parseInt(event.target.getAttribute('y'), 10);
+            const fleetList = this.playerFlot.shipList;
+
+            for (let ship of fleetList) {
+                if (
+                    Game.placingShipType === ship.type &&
+                    ship.isNormalPosition(x, y, this.direction_1)
+                ) {
+                    ship.createShip(x, y, this.direction_1, true);
+                    Game.placeShipCoords = ship.coordsShipCells();
+
+
+
+                    for (let coord of Game.placeShipCoords) {
+                        let cell = document.querySelector(
+                            `[x="${coord.x}"][y="${coord.y}"]`
+                        );
+
+
+                        if (!cell.classList.contains('placed-ship')) {
+                            cell.classList.add('placed-ship');
+                        }
+                    }
+                }
+            }
+        }
     }
 
+
+    positioningMouseoutHandler() {
+        if (this.placeShipOnField) {
+            for (let coord of Game.placeShipCoords) {
+                let cell = document.querySelector(
+                    `[x="${coord.x}"][y="${coord.y}"]`
+                );
+
+
+                if (cell.classList.contains('placed-ship')) {
+                    cell.classList.remove('placed-ship');
+                }
+            }
+        }
+    }
+
+    placingHandler(event) {
+        if (this.placeShipOnField) {
+            const x = parseInt(event.target.getAttribute('x'), 10);
+            const y = parseInt(event.target.getAttribute('y'), 10);
+
+            const successful = this.playerFlot.placeTheShip(
+                x,
+                y,
+                this.direction_1,
+                Game.placingShipType
+            );
+
+            if (successful) {
+                document.querySelector(`#${Game.placingShipType}`).classList.add('placed');
+                this.direction_1 = 0;
+                Game.placingShipType = '';
+                Game.placeShipCoords = [];
+                this.placeShipOnField = false;
+
+
+
+                // if (this.areAllShipsPlaced()) {
+                //     document.getElementById('rotate-button').classList.add('hidden');
+                //     document.getElementById('start-game').classList = 'highlight';
+                // }
+            }
+        }
+    }
+
+    rotateShipSpaceKey(event) {
+        if (this.placeShipOnField && event.code === 'Space') {
+            if (this.direction_1 === 0) {
+                this.direction_1 = 1;
+            } else this.direction_1 = 0;
+        }
+    }
 
 
     init() {
-        let rotateButtom = document.querySelector('.direction');
-        rotateButtom.addEventListener('click', this.rotateShip, false);
-        document.querySelectorAll('li').forEach((ship) => {
-            ship.addEventListener('click', this.shipListOnClickHandler);
+        let ListOfPlayerGrid = document.querySelectorAll('.player-grid .cell');
+        ListOfPlayerGrid.forEach(cell => {
+            cell.addEventListener('click', this.placingHandler.bind(this));
+            cell.addEventListener('mouseover', this.positioningMouseoverHandler.bind(this), false);
+            cell.addEventListener('mouseout', this.positioningMouseoutHandler.bind(this));
+
         })
+
+        document.querySelectorAll('li').forEach((ship) => {
+            ship.addEventListener('click', this.shipListOnClickHandler.bind(this), false);
+        })
+        document.addEventListener('keydown', this.rotateShipSpaceKey.bind(this))
+
 
     }
 
@@ -106,6 +183,10 @@ class Game {
 
 
 }
+Game.placingShipType = '';
+Game.plaseShipDirection = null;
+Game.placeShipCoords = [];
+
 
 
 
