@@ -19,9 +19,9 @@ class Field {
 
     }
     updateCell(x, y, type, player) {
-        if (type === 'ship') {
-            this.cells[y][x] = localStorage.getItem('shipCell');
-        }
+        // if (type === 'ship') {
+        //     this.cells[y][x] = localStorage.getItem('shipCell');
+        // }
         document.querySelector(`[x="${x}"][y="${y}"]`).classList.add(`field-${type}`);
         document.querySelector(`[x="${x}"][y="${y}"]`).classList.remove('placed-ship');
         console.log(this.cells)

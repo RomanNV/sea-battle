@@ -14,37 +14,33 @@ class Ship {
 
 
     }
-//зачастую не правильно работает нужна отладка
+    //зачастую не правильно работает нужна отладка
     isNormalPosition(x, y, direction) {
         if (!this.shipInBatleField(x, y, direction)) {
+
             return false
         }
         let _y = y;
         let _x = x;
-        let flagSetVertical = new Set();
-        let flagSetHorizontal = new Set();
 
         for (let i = 0; i < this.shipLength; i++) {
 
             if (direction === Ship.verticalDirection) {
-                if (this.playerField.cells[x][_y] === localStorage.getItem('blockedCell') ||
-                    this.playerField.cells[x][_y] === localStorage.getItem('shipCell')) {
-                    flagSetVertical.add(false);
+                if (this.playerField.cells[_y][x] === localStorage.getItem('blockedCell') ||
+                    this.playerField.cells[_y][x] === localStorage.getItem('shipCell')) {
+                    return false
                 }
 
             } else {
-                if (this.playerField.cells[_x][y] === localStorage.getItem('blockedCell') ||
-                    this.playerField.cells[_x][y] === localStorage.getItem('shipCell')) {
-                    flagSetHorizontal.add(false);
+                if (this.playerField.cells[y][_x] === localStorage.getItem('blockedCell') ||
+                    this.playerField.cells[y][_x] === localStorage.getItem('shipCell')) {
+                    return false
                 }
-
             }
             _y++;
             _x++;
-        }
-        if (flagSetHorizontal.has('false') || flagSetVertical.has('false')) {
-            return false
-        } else {
+
+        } {
             return true
         }
     }
@@ -61,17 +57,39 @@ class Ship {
     //метод  апргрейда матрицы поля боя когда помещаем корабль на поля боя
 
     updateCellWhenShipPlace(x, y, direction) {
-        if (direction === Ship.verticalDirection && x <= 10 && x >= 0) {
-            for (let i = 0; i < this.shipLength; i++) {
-                this.playerField.cells[y ][x] = localStorage.getItem('blockedCell');
-                this.playerField.cells[y ][x] = localStorage.getItem('blockedCell');
+        if (Ship.verticalDirection === direction) {
+            for (let i = 0; i <= this.shipLength; i++) {
+                if (!!this.shipInBatleField(x, y, direction)) {
+                    this.playerField.cells[y + i][x + 1] = localStorage.getItem('blockedCell');
+                    this.playerField.cells[y + i][x - 1] = localStorage.getItem('blockedCell');
+                }
             }
-        } else if (direction === Ship.horizontalDirection && this.isNormalPosition(x, y, direction) && y <= 10 && y >= 0) {
-            for (let i = 0; i < this.shipLength; i++) {
-                this.playerField.cells[x][y + 1] = localStorage.getItem('blockedCell');
-                this.playerField.cells[x][y - 1] = localStorage.getItem('blockedCell');
+            if (this.playerField.cells[this.shipLength + y][x]) {
+                this.playerField.cells[this.shipLength + y][x] = localStorage.getItem('blockedCell');
             }
+            if (this.playerField.cells[y - 1][x]) {
+                this.playerField.cells[y - 1][x] = localStorage.getItem('blockedCell');
+            }
+        } else
+        if (Ship.horizontalDirection === direction) {
+            for (let i = 0; i <= this.shipLength; i++) {
+                if (!!this.shipInBatleField(x, y, direction)) {
+                    this.playerField.cells[y + 1][x + i] = localStorage.getItem('blockedCell');
+                    this.playerField.cells[y - 1][x + i] = localStorage.getItem('blockedCell');
+                }
+            }
+            if (this.playerField.cells[y - 1][x - 1]) {
+
+            }
+            if (this.playerField.cells[y][x + this.shipLength]) {
+                this.playerField.cells[y][x + this.shipLength] = localStorage.getItem('blockedCell');
+            }
+            if (this.playerField.cells[y][x - 1]) {
+                this.playerField.cells[y][x - 1] = localStorage.getItem('blockedCell');
+            }
+
         }
+
     }
 
 
@@ -87,9 +105,7 @@ class Ship {
             for (let i = 0; i < this.shipLength; i++) {
                 if (this.direction === Ship.verticalDirection) {
                     this.playerField.cells[y + i][x] = localStorage.getItem('shipCell');
-                    console.log(y + i)
-                    console.log(x)
-                    console.log(this.shipLength)
+
                 } else
                 if (this.direction === Ship.horizontalDirection) {
                     this.playerField.cells[y][x + i] = localStorage.getItem('shipCell');

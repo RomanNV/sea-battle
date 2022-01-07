@@ -55,7 +55,7 @@ class Game {
 
     }
     //метод для изменения data-direction в методе подключим к кнопке
-   
+
 
     //метод для отрисовки корабля при наведении на поле боя при расстановке корабля 
     positioningMouseoverHandler(event) {
@@ -124,17 +124,10 @@ class Game {
                 Game.placingShipType = '';
                 Game.placeShipCoords = [];
                 this.placeShipOnField = false;
-
-
-
-                // if (this.areAllShipsPlaced()) {
-                //     document.getElementById('rotate-button').classList.add('hidden');
-                //     document.getElementById('start-game').classList = 'highlight';
-                // }
             }
         }
     }
-
+//доавил возможность изменения положения корабля при нажатии на пробел, думаю кнопку удалю со временем
     rotateShipSpaceKey(event) {
         if (this.placeShipOnField && event.code === 'Space') {
             if (this.direction_1 === 0) {
@@ -162,24 +155,10 @@ class Game {
     }
 
 
-    // getShipOnClick() {
-    //     let shipList = document.querySelectorAll('li');
-    //     shipList.forEach((elem) => {
-    //         elem.addEventListener('click', (event) => {
-    //             return new Ship(event.getAttribute('id'))
-    //         })
-
-    //     })
-    // }
-
-    // mouseClickOnShipHandler(event) {
-
-
-    // }
-
-
-
-
+    //необходимо добавить метод расстановки кораблей рандомно
+// думаю вместо расстановки корабля по нажатию на название корабля просто сделать одну кнопку начать игру и затем две кнопки расставить рандомно либо кастомно
+//попробовать надо реализоваь чтобы просто по очереди корабли вываливались при наведении на поле боя, 
+//можно попробовать реализовать метод отмены расстановки корабля не знаю успею ли
 
 
 }
