@@ -14,7 +14,7 @@ class Ship {
 
 
     }
-    //зачастую не правильно работает нужна отладка
+  //метод проверяет разрешено ли туда ставить корабль или нет
     isNormalPosition(x, y, direction) {
         if (!this.shipInBatleField(x, y, direction)) {
 
@@ -53,40 +53,61 @@ class Ship {
             return y + this.shipLength <= 10;
         }
     }
+    //метод получения ссылок на массивы поля где стоит корабль
+    getTheArrayOfCellAroundShip(x, y, direction) {
+        let arrVertical = [];
+        if (Ship.verticalDirection === direction) {
+            for (let i = -1; i < this.shipLength + 1; i++) {
+                arrVertical.push(this.playerField.cells[y + i])
+            }
+            return arrVertical
+        }
+        if (Ship.horizontalDirection === direction) {
+            for (let i = -1; i < 2; i++) {
+                arrVertical.push(this.playerField.cells[y + i])
+            }
+            return arrVertical
+        }
 
+
+    }
     //метод  апргрейда матрицы поля боя когда помещаем корабль на поля боя
 
     updateCellWhenShipPlace(x, y, direction) {
+        let arr = (this.getTheArrayOfCellAroundShip(x, y, direction)).filter(elem => {
+            if (!elem) {
+                return false;
+            } else
+                return true;
+        });
         if (Ship.verticalDirection === direction) {
-            for (let i = 0; i <= this.shipLength; i++) {
-                if (!!this.shipInBatleField(x, y, direction)) {
-                    this.playerField.cells[y + i][x + 1] = localStorage.getItem('blockedCell');
-                    this.playerField.cells[y + i][x - 1] = localStorage.getItem('blockedCell');
+            arr.forEach((elem) => {
+                if (elem[x + 1]) {
+                    elem[x + 1] = localStorage.getItem('blockedCell');
+                }
+                if (elem[x - 1]) {
+                    elem[x - 1] = localStorage.getItem('blockedCell');
+                }
+                if (elem[x] != 2) {
+                    elem[x] = localStorage.getItem('blockedCell');
+                    elem[x] = localStorage.getItem('blockedCell');
+                }
+            })
+        }
+        else {arr.forEach((elem)=>{
+            if(elem[x]!=2){
+                for(let i = 0; i<this.shipLength; i++){
+                    elem[x+i]= localStorage.getItem('blockedCell');
                 }
             }
-            if (this.playerField.cells[this.shipLength + y][x]) {
-                this.playerField.cells[this.shipLength + y][x] = localStorage.getItem('blockedCell');
+            if(elem[x-1]){
+                elem[x-1]=localStorage.getItem('blockedCell');
             }
-            if (this.playerField.cells[y - 1][x]) {
-                this.playerField.cells[y - 1][x] = localStorage.getItem('blockedCell');
+            if(elem[x+this.shipLength]){
+                elem[x+this.shipLength]=localStorage.getItem('blockedCell');
             }
-        } else
-        if (Ship.horizontalDirection === direction) {
-            for (let i = 0; i <= this.shipLength; i++) {
-                if (!!this.shipInBatleField(x, y, direction)) {
-                    this.playerField.cells[y + 1][x + i] = localStorage.getItem('blockedCell');
-                    this.playerField.cells[y - 1][x + i] = localStorage.getItem('blockedCell');
-                }
-            }
-            if (this.playerField.cells[y - 1][x - 1]) {
-
-            }
-            if (this.playerField.cells[y][x + this.shipLength]) {
-                this.playerField.cells[y][x + this.shipLength] = localStorage.getItem('blockedCell');
-            }
-            if (this.playerField.cells[y][x - 1]) {
-                this.playerField.cells[y][x - 1] = localStorage.getItem('blockedCell');
-            }
+            
+        })
 
         }
 

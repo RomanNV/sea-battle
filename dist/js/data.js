@@ -1,7 +1,7 @@
 class Data {
     dataGame = {
         blockedCell:-1,
-        emptyCell: 0,
+        emptyCell: 7,
         missCell: 1,
         shipCell: 2,
         hitCell: 3,
