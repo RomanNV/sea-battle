@@ -15,15 +15,25 @@ class Field {
                 row.push(localStorage.getItem('emptyCell'))
             }
         }
-      
+
 
     }
     updateCell(x, y, type, player) {
-        // if (type === 'ship') {
-        //     this.cells[y][x] = localStorage.getItem('shipCell');
-        // }
-        document.querySelector(`[x="${x}"][y="${y}"]`).classList.add(`field-${type}`);
-        document.querySelector(`[x="${x}"][y="${y}"]`).classList.remove('placed-ship');
+        // // if (type === 'ship') {
+        // //     this.cells[y][x] = localStorage.getItem('shipCell');
+        // // }
+        // document.querySelector(`[x="${x}"][y="${y}"]`).classList.add(`field-${type}`);
+        // document.querySelector(`[x="${x}"][y="${y}"]`).classList.remove('placed-ship');
+        
+        let target;
+        if (player == localStorage.getItem('player')) {
+            target = 'player-grid';
+
+        } else { 
+            target = 'computer-grid';
+        }
+        document.querySelector(`.${target} [x="${x}"][y="${y}"]`).classList.add(`field-${type}`);
+        document.querySelector(`.${target} [x="${x}"][y="${y}"]`).classList.remove('placed-ship');
         console.log(this.cells)
     }
 

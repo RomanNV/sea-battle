@@ -11,11 +11,12 @@ class Game {
 
     constructor() {
         this.size = 10;
-        this.playerField = localStorage.getItem('player');
-        this.computerField = localStorage.getItem('computer');
+        this.player = localStorage.getItem('player');
+        this.computer = localStorage.getItem('computer');
         this.fieldPlayer = new Field(this.size);
         this.fieldComputer = new Field(this.size);
-        this.playerFlot = new Flot(this.fieldPlayer, this.playerField);
+        this.playerFlot = new Flot(this.fieldPlayer, this.player);
+        this.computerFlot = new Flot(this.fieldComputer, this.computer);
         this.placeShipOnField = false;
         this.insertDivOnField();
         this.init();
@@ -127,13 +128,17 @@ class Game {
             }
         }
     }
-//доавил возможность изменения положения корабля при нажатии на пробел, думаю кнопку удалю со временем
+    //доавил возможность изменения положения корабля при нажатии на пробел, думаю кнопку удалю со временем
     rotateShipSpaceKey(event) {
         if (this.placeShipOnField && event.code === 'Space') {
             if (this.direction_1 === 0) {
                 this.direction_1 = 1;
             } else this.direction_1 = 0;
         }
+    }
+    randomPlaceShips(){
+        this.playerFlot.placeShipsRandom(this.player);
+        
     }
 
 
@@ -148,17 +153,21 @@ class Game {
 
         document.querySelectorAll('li').forEach((ship) => {
             ship.addEventListener('click', this.shipListOnClickHandler.bind(this), false);
-        })
-        document.addEventListener('keydown', this.rotateShipSpaceKey.bind(this))
-
+        });
+        let randomBtn =document.querySelector('.randomBtn');
+        randomBtn.addEventListener('click', this.randomPlaceShips.bind(this), false);
+        
+       
+        document.addEventListener('keydown', this.rotateShipSpaceKey.bind(this),false)
+        this.computerFlot.placeShipsRandom();
 
     }
 
 
     //необходимо добавить метод расстановки кораблей рандомно
-// думаю вместо расстановки корабля по нажатию на название корабля просто сделать одну кнопку начать игру и затем две кнопки расставить рандомно либо кастомно
-//попробовать надо реализоваь чтобы просто по очереди корабли вываливались при наведении на поле боя, 
-//можно попробовать реализовать метод отмены расстановки корабля не знаю успею ли
+    // думаю вместо расстановки корабля по нажатию на название корабля просто сделать одну кнопку начать игру и затем две кнопки расставить рандомно либо кастомно
+    //попробовать надо реализоваь чтобы просто по очереди корабли вываливались при наведении на поле боя, 
+    //можно попробовать реализовать метод отмены расстановки корабля не знаю успею ли
 
 
 }
