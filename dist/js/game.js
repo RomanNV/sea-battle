@@ -18,6 +18,7 @@ class Game {
         this.playerFlot = new Flot(this.fieldPlayer, this.player);
         this.computerFlot = new Flot(this.fieldComputer, this.computer);
         this.placeShipOnField = false;
+this.readyToPlay = false;
         this.insertDivOnField();
         this.init();
         this.direction_1 = 0;
@@ -125,10 +126,34 @@ class Game {
                 Game.placingShipType = '';
                 Game.placeShipCoords = [];
                 this.placeShipOnField = false;
+if (this.areAllShipsPlaced()) {
+          document.querySelector('#start-game').classList = 'highlight';
+        }
+
             }
         }
     }
-    //доавил возможность изменения положения корабля при нажатии на пробел, думаю кнопку удалю со временем
+//Добавить стили
+
+
+//Проверка все ли корабли поместили
+
+areAllShipsPlaced() {
+    const fleetList = document.querySelectorAll('.fleet-list li');
+
+    for (let ship of fleetList) {
+      if (ship.classList.contains('placed')) {
+        continue;
+      } else {
+        return false;
+      }
+    }
+return true;
+  }
+
+
+
+//добавил возможность изменения положения корабля при нажатии на пробел, думаю кнопку удалю со временем
     rotateShipSpaceKey(event) {
         if (this.placeShipOnField && event.code === 'Space') {
             if (this.direction_1 === 0) {
