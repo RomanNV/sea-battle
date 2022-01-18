@@ -82,6 +82,33 @@ class Flot {
         }
 
     }
+//Метод нахождения корабля по координатам
+findShipByCoords(x, y) {
+    for (let ship of this.shipList) {
+      if (ship.direction === Ship.verticalDirection) {
+        if (
+          x === ship.xPosition &&
+          y>= ship.yPosition &&
+          y < ship.yPosition + ship.shipLength
+        ) {
+          return ship;
+        } else {
+          continue;
+        }
+      } else {
+        if (
+          y === ship.yPosition &&
+          x >= ship.xPosition &&
+          x< ship.xPosition + ship.shipLength
+        ) {
+          return ship;
+        } else {
+          continue;
+        }
+      }
+    }
+    return null;
+  }
 
 //Все ли корабли потоплены?
 areAllShipsSunk() {
