@@ -46,7 +46,7 @@ class Flot {
     }
 
 
-
+//Расстановка рандомно кораблей
     placeShipsRandom(player) {
         let x = null;
         let y = null;
@@ -82,6 +82,20 @@ class Flot {
         }
 
     }
+
+//Все ли корабли потоплены?
+areAllShipsSunk() {
+    for (let ship of this.shipList) {
+      if (ship.sunk === false) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+
+
 
 }
 
