@@ -167,6 +167,12 @@ return true;
     }
 
 
+startGameHandler(event) {
+    this.readyToPlay = true;
+    document.querySelector('.wrapper-list-ships').classList.add('hidden');
+  
+//Стили!
+
     init() {
         let ListOfPlayerGrid = document.querySelectorAll('.player-grid .cell');
         ListOfPlayerGrid.forEach(cell => {
@@ -182,7 +188,10 @@ return true;
         let randomBtn =document.querySelector('.randomBtn');
         randomBtn.addEventListener('click', this.randomPlaceShips.bind(this), false);
         
-       
+       document
+      .querySelector('#start-game')
+      .addEventListener('click', this.startGameHandler.bind(this), false);
+
         document.addEventListener('keydown', this.rotateShipSpaceKey.bind(this),false)
         this.computerFlot.placeShipsRandom();
 
