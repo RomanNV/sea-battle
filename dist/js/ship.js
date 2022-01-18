@@ -161,11 +161,39 @@ class Ship {
         return coordsShipCellsObjectList;
     }
 
+// Метод проверки потоплен корабль или нет
 
+isSunk() {
+    return this.damage >= this.maxDamage;
+  }
+// Метод для отрисовки потопленного корабля
 
+sinkShip() {
+    this.damage = this.maxDamage;
+    this.sunk = true;
 
+let allCells = this.coordsShipCells();
 
+for (let i = 0; i < this.shipLength; i++) {
+      this.playerField.updateCell(
+        allCells[i].x,
+        allCells[i].y,
+        'sunk',
+        this.player
+      );
+    }
+  }
 
+incrementDamage() {
+    this.damage++;
+
+if (this.isSunk()) {
+      this.sinkShip();
+      return localStorage.getItem('sunkCell');
+    }
+return localStorage.getItem('hitCell');
+  }
+}
 
 }
 Ship.verticalDirection = 0;
