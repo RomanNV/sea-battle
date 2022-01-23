@@ -1,23 +1,17 @@
 {
-  "name": "sea",
+  "name": "sea-battle",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "source": "src/index.html",
+  "type": "module",
   "scripts": {
-    "sass": "node-sass -w scss -o dist/css --recursive"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RomanNV/sea-battle.git"
+    "start": "parcel",
+    "build": "parcel build"
   },
   "keywords": [],
-  "author": "",
+  "author": "Roman Nosov",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/RomanNV/sea-battle/issues"
-  },
-  "homepage": "https://github.com/RomanNV/sea-battle#readme",
-  "dependencies": {
-    "node-sass": "^7.0.0"
+  "devDependencies": {
+    "parcel": "^2.2.1"
   }
 }
