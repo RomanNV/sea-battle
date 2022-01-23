@@ -12,6 +12,6 @@
   "author": "Roman Nosov",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.2.1"
+    "parcel": "latest"
   }
 }

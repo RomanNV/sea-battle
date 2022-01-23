@@ -1,4 +1,3 @@
-"use strict";
 class Field {
   constructor(size) {
     this.size = size;
