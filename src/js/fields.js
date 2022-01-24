@@ -2,9 +2,8 @@ class Field {
   constructor(size) {
     this.size = size;
     this.cells = [];
-
     this.init();
-    console.log(this.cells, "sss");
+    console.log(this.cells);
   }
   init() {
     for (let i = 0; i < this.size; i++) {
@@ -16,25 +15,43 @@ class Field {
     }
   }
   updateCell(x, y, type, player) {
-    // // if (type === 'ship') {
-    // //     this.cells[y][x] = localStorage.getItem('shipCell');
-    // // }
-    // document.querySelector(`[x="${x}"][y="${y}"]`).classList.add(`field-${type}`);
-    // document.querySelector(`[x="${x}"][y="${y}"]`).classList.remove('placed-ship');
-
     let target;
     if (player == localStorage.getItem("player")) {
       target = "player-grid";
     } else {
       target = "computer-grid";
     }
+
+    if (type !== "ship") {
+      this.cells[y][x] = localStorage.getItem(`${type}`);
+      document
+        .querySelector(`.${target} [x="${x}"][y="${y}"]`)
+        .classList.add(`field-${type}`);
+    }
+
     document
-      .querySelector(`.${target} [x="${x}"][y="${y}"]`)
+      .querySelector(`.${target} [y="${y}"][x="${x}"]`)
       .classList.add(`field-${type}`);
-    document
-      .querySelector(`.${target} [x="${x}"][y="${y}"]`)
-      .classList.remove("placed-ship");
-    console.log(this.cells);
+  }
+  isMiss(x, y) {
+    return this.cells[y][x] === localStorage.getItem("miss");
+  }
+
+  isUndamagedShip(x, y) {
+    return this.cells[y][x] === localStorage.getItem("shipCell");
+  }
+
+  isDamagedShip(x, y) {
+    let result;
+    try {
+      result =
+        this.cells[y][x] === localStorage.getItem("hit") ||
+        this.cells[y][x] === localStorage.getItem("sunk");
+    } catch (error) {
+      console.warn({ x, y });
+      console.warn(this.cells[y][x]);
+    }
+    return result;
   }
 }
 

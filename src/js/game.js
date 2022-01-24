@@ -2,6 +2,7 @@ import Data from "./data.js";
 import Field from "./fields.js";
 import Ship from "./ship.js";
 import Flot from "./flot.js";
+import Computer from "./computer.js";
 
 //загрузка служебных файлов
 let data = new Data();
@@ -20,6 +21,7 @@ class Game {
     this.insertDivOnField();
     this.init();
     this.direction_1 = 0;
+    this.robot = new Computer(this);
   }
   //разобьем поле боя на клетки с координатами x и y
   insertDivOnField() {
@@ -111,7 +113,7 @@ class Game {
         Game.placeShipCoords = [];
         this.placeShipOnField = false;
         if (this.areAllShipsPlaced()) {
-          document.querySelector("#start-game").classList = "highlight";
+          document.querySelector("#start-game").classList.remove("hidden");
         }
       }
     }
@@ -141,16 +143,86 @@ class Game {
       } else this.direction_1 = 0;
     }
   }
+
+  //метод случайной расстановки кораблей
   randomPlaceShips() {
     this.playerFlot.placeShipsRandom(this.player);
+    document.getElementById("randomBtn").classList.add("hidden");
+    document.getElementById("start-game").classList.remove("hidden");
+    document.querySelector(".ship-list").classList.add("hidden");
   }
-
+  //обработчик на кнопку старт
   startGameHandler(event) {
     this.readyToPlay = true;
     document.querySelector(".wrapper-list-ships").classList.add("hidden");
   }
 
-  //Стили!
+  shootHandler(event) {
+    if (!this.readyToPlay) return;
+
+    const x = parseInt(event.target.getAttribute("x"), 10);
+    const y = parseInt(event.target.getAttribute("y"), 10);
+
+    const result = this.shoot(x, y, localStorage.getItem("computer"));
+
+    if (!Game.gameOver && result === localStorage.getItem("miss")) {
+      this.robot.shoot();
+    }
+  }
+
+  checkForGameOver() {
+    if (this.computerFlot.areAllShipsSunk()) {
+      alert("Поздравляю, вы победили!");
+      Game.gameOver = true;
+    } else if (this.playerFlot.areAllShipsSunk()) {
+      alert("К сожалению, вы проиграли. Компьютер потопил все ваши корабли");
+      Game.gameOver = true;
+    }
+  }
+
+  //выстрел
+  shoot(x, y, targetPlayer) {
+    let targetGrid = null;
+    let targetFleet = null;
+    let result = null;
+
+    if (targetPlayer === localStorage.getItem("player")) {
+      targetGrid = this.fieldPlayer;
+      targetFleet = this.playerFlot;
+    } else if (targetPlayer === localStorage.getItem("computer")) {
+      targetGrid = this.fieldComputer;
+      targetFleet = this.computerFlot;
+    }
+
+    if (targetGrid.isDamagedShip(x, y) || targetGrid.isMiss(x, y)) {
+      console.log(x, y);
+      return result;
+    } else if (targetGrid.isUndamagedShip(x, y)) {
+      targetGrid.updateCell(x, y, "hit", targetPlayer);
+      result = targetFleet.findShipByCoords(x, y).incrementDamage();
+      this.checkForGameOver();
+
+      if (
+        targetPlayer === localStorage.getItem("player") &&
+        result === localStorage.getItem("hit")
+      ) {
+        Computer.damagedShipCoordsX.push(x);
+        Computer.damagedShipCoordsY.push(y);
+      }
+
+      return result;
+    } else {
+      targetGrid.updateCell(x, y, "miss", targetPlayer);
+      result = localStorage.getItem("miss");
+      return result;
+    }
+  }
+
+  // testhandler(event) {
+  //   const x = parseInt(event.target.getAttribute("x"), 10);
+  //   const y = parseInt(event.target.getAttribute("y"), 10);
+  //   this.robot.getCellsAround(x, y);
+  // }
 
   init() {
     let ListOfPlayerGrid = document.querySelectorAll(".player-grid .cell");
@@ -174,7 +246,8 @@ class Game {
         false
       );
     });
-    let randomBtn = document.querySelector(".randomBtn");
+
+    let randomBtn = document.getElementById("randomBtn");
     randomBtn.addEventListener(
       "click",
       this.randomPlaceShips.bind(this),
@@ -190,15 +263,16 @@ class Game {
       this.rotateShipSpaceKey.bind(this),
       false
     );
+
+    let ListOfComputerGrid = document.querySelectorAll(".computer-grid .cell");
+    ListOfComputerGrid.forEach((cell) => {
+      cell.addEventListener("click", this.shootHandler.bind(this));
+    });
+
     this.computerFlot.placeShipsRandom();
   }
-
-  //необходимо добавить метод расстановки кораблей рандомно
-  // думаю вместо расстановки корабля по нажатию на название корабля просто сделать одну кнопку начать игру и затем две кнопки расставить рандомно либо кастомно
-  //попробовать надо реализоваь чтобы просто по очереди корабли вываливались при наведении на поле боя,
-  //можно попробовать реализовать метод отмены расстановки корабля не знаю успею ли
 }
-
+Game.gameOver = false;
 Game.placingShipType = "";
 Game.plaseShipDirection = null;
 Game.placeShipCoords = [];

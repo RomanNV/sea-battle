@@ -2,10 +2,10 @@ class Data {
   dataGame = {
     blockedCell: -1,
     emptyCell: 7,
-    missCell: 1,
+    miss: "miss",
     shipCell: 2,
-    hitCell: 3,
-    sunkCell: 4,
+    hit: "hit",
+    sunk: 4,
     player: 0,
     computer: 1,
     linkor: 4,

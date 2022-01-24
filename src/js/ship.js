@@ -9,6 +9,7 @@ class Ship {
     this.player = player;
     this.maxDamage = this.shipLength;
     this.sunk = false;
+    this.damage = 0;
   }
   //метод проверяет разрешено ли туда ставить корабль или нет
   isNormalPosition(x, y, direction) {
@@ -142,21 +143,18 @@ class Ship {
         });
       }
     }
-    console.log(coordsShipCellsObjectList);
     return coordsShipCellsObjectList;
   }
 
   // Метод проверки потоплен корабль или нет
-
   isSunk() {
     return this.damage >= this.maxDamage;
   }
-  // Метод для отрисовки потопленного корабля
 
+  // Метод для отрисовки потопленного корабля
   sinkShip() {
     this.damage = this.maxDamage;
     this.sunk = true;
-
     let allCells = this.coordsShipCells();
 
     for (let i = 0; i < this.shipLength; i++) {
@@ -174,9 +172,9 @@ class Ship {
 
     if (this.isSunk()) {
       this.sinkShip();
-      return localStorage.getItem("sunkCell");
+      return localStorage.getItem("sunk");
     }
-    return localStorage.getItem("hitCell");
+    return localStorage.getItem("hit");
   }
 }
 

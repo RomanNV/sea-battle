@@ -78,19 +78,20 @@ class Flot {
     for (let ship of this.shipList) {
       if (ship.direction === Ship.verticalDirection) {
         if (
-          x === ship.xPosition &&
-          y >= ship.yPosition &&
-          y < ship.yPosition + ship.shipLength
+          x === ship.Position_x &&
+          y >= ship.Position_y &&
+          y < ship.Position_y + ship.shipLength
         ) {
+          console.log(ship);
           return ship;
         } else {
           continue;
         }
       } else {
         if (
-          y === ship.yPosition &&
-          x >= ship.xPosition &&
-          x < ship.xPosition + ship.shipLength
+          y === ship.Position_y &&
+          x >= ship.Position_x &&
+          x < ship.Position_x + ship.shipLength
         ) {
           return ship;
         } else {
