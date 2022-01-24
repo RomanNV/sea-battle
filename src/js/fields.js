@@ -3,7 +3,6 @@ class Field {
     this.size = size;
     this.cells = [];
     this.init();
-    console.log(this.cells);
   }
   init() {
     for (let i = 0; i < this.size; i++) {

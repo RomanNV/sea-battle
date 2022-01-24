@@ -82,7 +82,6 @@ class Flot {
           y >= ship.Position_y &&
           y < ship.Position_y + ship.shipLength
         ) {
-          console.log(ship);
           return ship;
         } else {
           continue;
@@ -93,7 +92,6 @@ class Flot {
           x >= ship.Position_x &&
           x < ship.Position_x + ship.shipLength
         ) {
-          console.log(ship);
           return ship;
         } else {
           continue;

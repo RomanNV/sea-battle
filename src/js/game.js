@@ -1,6 +1,5 @@
 import Data from "./data.js";
 import Field from "./fields.js";
-import Ship from "./ship.js";
 import Flot from "./flot.js";
 import Computer from "./computer.js";
 
@@ -42,6 +41,8 @@ class Game {
   // метод должен переключать флаг в классе на true и менять стили на элементах li
   shipListOnClickHandler(event) {
     document.getElementById("randomBtn").classList.add("hidden");
+    document.getElementById("message").classList.remove("hidden");
+    document.getElementById("message").classList.add("visible");
     document.querySelectorAll("li").forEach((elem) => {
       elem.classList.remove("placing");
     });
@@ -105,14 +106,16 @@ class Game {
 
       if (successful) {
         document
-          .querySelector(`#${Game.placingShipType}`)
+          .getElementById(`${Game.placingShipType}`)
           .classList.add("placed");
         this.direction_1 = 0;
         Game.placingShipType = "";
         Game.placeShipCoords = [];
         this.placeShipOnField = false;
         if (this.areAllShipsPlaced()) {
-          document.querySelector("#start-game").classList.remove("hidden");
+          document.getElementById("start-game").classList.remove("hidden");
+          document.getElementById("start-game").classList.add("btn-center");
+          document.getElementById("message").classList.add("hidden");
         }
       }
     }
@@ -146,6 +149,7 @@ class Game {
     this.playerFlot.placeShipsRandom(this.player);
     document.getElementById("randomBtn").classList.add("hidden");
     document.getElementById("start-game").classList.remove("hidden");
+    document.getElementById("start-game").classList.add("btn-center");
     document.querySelector(".ship-list").classList.add("hidden");
   }
   //обработчик на кнопку старт
@@ -208,7 +212,6 @@ class Game {
       ) {
         Computer.damagedShipCoordsX.push(x);
         Computer.damagedShipCoordsY.push(y);
-        console.log(Computer.damagedShipCoordsX, Computer.damagedShipCoordsY);
       }
 
       return result;
@@ -237,7 +240,7 @@ class Game {
       ship.addEventListener("click", this.shipListOnClickHandler.bind(this));
     });
 
-    let randomBtn = document.getElementById("randomBtn");
+    document.getElementById("randomBtn");
     randomBtn.addEventListener("click", this.randomPlaceShips.bind(this));
 
     document
@@ -246,8 +249,7 @@ class Game {
 
     document.addEventListener("keydown", this.rotateShipSpaceKey.bind(this));
 
-    let ListOfComputerGrid = document.querySelectorAll(".computer-grid .cell");
-    ListOfComputerGrid.forEach((cell) => {
+    document.querySelectorAll(".computer-grid .cell").forEach((cell) => {
       cell.addEventListener("click", this.shootHandler.bind(this));
     });
 

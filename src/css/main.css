@@ -5,104 +5,139 @@
 }
 
 body {
-  background-color: bisque;
+  background-color: rgb(255, 228, 196);
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
 }
 
 .wrapper {
+  display: flex;
   margin-top: 40px;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.wrapper-list-ships {
   display: flex;
-}
-
-.wrapper .wrapper-list-ships {
-  margin: 20px;
-  height: 440px;
+  flex-direction: column;
+  margin: 60px;
+  height: 430px;
   width: 200px;
-  border: 1px solid red;
-  line-height: 2rem;
-  padding: 10px;
+  background-color: rgb(255, 247, 238);
+  line-height: 1.8rem;
   text-align: center;
+  padding: 20px;
+}
+.ship-list {
+  padding: 10px;
 }
 
-.wrapper .wrapper-list-ships .ship-list {
-  padding: 20px 20px 0 20px;
-}
-
-.wrapper .wrapper-list-ships .ship-list li {
+.wrapper-list-ships li {
   list-style: none;
 }
-.wrapper .wrapper-list-ships .ship-list .placing {
+.wrapper-list-ships .placing {
   font-weight: bold;
 }
-.wrapper .wrapper-list-ships .ship-list .placed {
+.wrapper-list-ships .placed {
   display: none;
 }
 
-.wrapper .wrapper-list-ships .ship-list:hover {
+.wrapper-list-ships :hover {
   cursor: pointer;
 }
 
 .wrapper .btn {
-  padding: 3px 10px;
+  font-size: 16px;
+  padding: 10px;
   border-radius: 5px;
   background-color: red;
 }
+/* .wrapper .btn .btn-center {
+  font-size: 20px;
+
+  padding: 10px;
+  border-radius: 5px;
+  background-color: red;
+} */
 .wrapper .btn:hover {
   cursor: pointer;
   background-color: green;
 }
-/* .wrapper .direction {
-  padding: 3px 10px;
-  border-radius: 5px;
-  background-color: red;
-} */
-/* .wrapper .direction:hover {
-  cursor: pointer;
-  background-color: green;
-} */
-.wrapper .field {
+.field {
+  width: 430px;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin: 60px;
 }
-.wrapper .field h2 {
+.field h2 {
   display: block;
 }
-.wrapper .field .grid {
+.field .grid {
   display: flex;
   background-color: #0099ff;
   width: 400px;
   height: 400px;
   flex-wrap: wrap;
 }
-.wrapper .field .grid .cell {
+.cell {
   display: inline-block;
   height: 38px;
   width: 38px;
   margin: 1px;
   background-color: #fff;
 }
-.wrapper .field .grid .placed-ship {
+.placed-ship {
   background-color: cadetblue;
 }
-.wrapper .field .grid .field-ship {
+.field-ship {
   background-color: lightblue;
 }
-.wrapper .field .grid .field-hit {
+.field-hit {
   background-color: red;
 }
-.wrapper .field .grid .field-miss {
+.field-miss {
   background-color: lightgrey;
 }
-.wrapper .field .grid .field-sunk {
+.field-sunk {
   background-color: black;
 }
-.wrapper .field .computer-grid .cell:hover {
+.field .computer-grid .cell:hover {
   background-color: cadetblue;
 }
 .hidden {
   display: none;
+}
+.visible {
+  padding: 5px;
+  background-color: blue;
+  color: #fff;
+  border-radius: 5px;
+}
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+footer .sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+footer .sign i {
+  padding: 10px;
+  opacity: 0.3;
+  color: #0099ff;
+}
+footer .sign p {
+  opacity: 0.3;
+  color: #0099ff;
+  text-align: center;
 }

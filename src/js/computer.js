@@ -31,7 +31,6 @@ class Computer {
         cell.xPos >= 0 && cell.xPos <= 9 && cell.yPos >= 0 && cell.yPos <= 9
       );
     });
-    console.log(cells);
     return cells;
   }
 
