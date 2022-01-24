@@ -41,20 +41,19 @@ class Game {
   //создадим метод который работает при клике на список кораблей,
   // метод должен переключать флаг в классе на true и менять стили на элементах li
   shipListOnClickHandler(event) {
-    document.querySelectorAll(".ship-list li").forEach((elem) => {
+    document.getElementById("randomBtn").classList.add("hidden");
+    document.querySelectorAll("li").forEach((elem) => {
       elem.classList.remove("placing");
     });
     Game.placingShipType = event.target.getAttribute("id");
     document.querySelector(`#${Game.placingShipType}`).classList.add("placing");
     this.placeShipOnField = true;
   }
-  //метод для изменения data-direction в методе подключим к кнопке
 
   //метод для отрисовки корабля при наведении на поле боя при расстановке корабля
   positioningMouseoverHandler(event) {
     if (this.placeShipOnField) {
       const x = parseInt(event.target.getAttribute("x"), 10);
-
       const y = parseInt(event.target.getAttribute("y"), 10);
       const fleetList = this.playerFlot.shipList;
 
@@ -118,13 +117,11 @@ class Game {
       }
     }
   }
-  //Добавить стили
 
   //Проверка все ли корабли поместили
 
   areAllShipsPlaced() {
-    const fleetList = document.querySelectorAll(".fleet-list li");
-
+    const fleetList = document.querySelectorAll("li");
     for (let ship of fleetList) {
       if (ship.classList.contains("placed")) {
         continue;
@@ -135,7 +132,7 @@ class Game {
     return true;
   }
 
-  //добавил возможность изменения положения корабля при нажатии на пробел, думаю кнопку удалю со временем
+  //добавил возможность изменения положения корабля при нажатии на пробел
   rotateShipSpaceKey(event) {
     if (this.placeShipOnField && event.code === "Space") {
       if (this.direction_1 === 0) {
@@ -174,9 +171,13 @@ class Game {
     if (this.computerFlot.areAllShipsSunk()) {
       alert("Поздравляю, вы победили!");
       Game.gameOver = true;
+
+      this.readyToPlay = false;
     } else if (this.playerFlot.areAllShipsSunk()) {
       alert("К сожалению, вы проиграли. Компьютер потопил все ваши корабли");
       Game.gameOver = true;
+
+      this.readyToPlay = false;
     }
   }
 
@@ -193,21 +194,21 @@ class Game {
       targetGrid = this.fieldComputer;
       targetFleet = this.computerFlot;
     }
-
+    //если кликаем по уже существующей ячейке возвращаем null и ход не переходит
     if (targetGrid.isDamagedShip(x, y) || targetGrid.isMiss(x, y)) {
-      console.log(x, y);
       return result;
     } else if (targetGrid.isUndamagedShip(x, y)) {
       targetGrid.updateCell(x, y, "hit", targetPlayer);
       result = targetFleet.findShipByCoords(x, y).incrementDamage();
       this.checkForGameOver();
-
+      //добавляем координаты х и у при попадании компьютера по кораблю игрока, для логики добивания
       if (
         targetPlayer === localStorage.getItem("player") &&
         result === localStorage.getItem("hit")
       ) {
         Computer.damagedShipCoordsX.push(x);
         Computer.damagedShipCoordsY.push(y);
+        console.log(Computer.damagedShipCoordsX, Computer.damagedShipCoordsY);
       }
 
       return result;
@@ -218,20 +219,13 @@ class Game {
     }
   }
 
-  // testhandler(event) {
-  //   const x = parseInt(event.target.getAttribute("x"), 10);
-  //   const y = parseInt(event.target.getAttribute("y"), 10);
-  //   this.robot.getCellsAround(x, y);
-  // }
-
   init() {
     let ListOfPlayerGrid = document.querySelectorAll(".player-grid .cell");
     ListOfPlayerGrid.forEach((cell) => {
       cell.addEventListener("click", this.placingHandler.bind(this));
       cell.addEventListener(
         "mouseover",
-        this.positioningMouseoverHandler.bind(this),
-        false
+        this.positioningMouseoverHandler.bind(this)
       );
       cell.addEventListener(
         "mouseout",
@@ -240,29 +234,17 @@ class Game {
     });
 
     document.querySelectorAll("li").forEach((ship) => {
-      ship.addEventListener(
-        "click",
-        this.shipListOnClickHandler.bind(this),
-        false
-      );
+      ship.addEventListener("click", this.shipListOnClickHandler.bind(this));
     });
 
     let randomBtn = document.getElementById("randomBtn");
-    randomBtn.addEventListener(
-      "click",
-      this.randomPlaceShips.bind(this),
-      false
-    );
+    randomBtn.addEventListener("click", this.randomPlaceShips.bind(this));
 
     document
       .querySelector("#start-game")
-      .addEventListener("click", this.startGameHandler.bind(this), false);
+      .addEventListener("click", this.startGameHandler.bind(this));
 
-    document.addEventListener(
-      "keydown",
-      this.rotateShipSpaceKey.bind(this),
-      false
-    );
+    document.addEventListener("keydown", this.rotateShipSpaceKey.bind(this));
 
     let ListOfComputerGrid = document.querySelectorAll(".computer-grid .cell");
     ListOfComputerGrid.forEach((cell) => {

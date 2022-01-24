@@ -42,15 +42,10 @@ class Field {
   }
 
   isDamagedShip(x, y) {
-    let result;
-    try {
-      result =
-        this.cells[y][x] === localStorage.getItem("hit") ||
-        this.cells[y][x] === localStorage.getItem("sunk");
-    } catch (error) {
-      console.warn({ x, y });
-      console.warn(this.cells[y][x]);
-    }
+    let result =
+      this.cells[y][x] === localStorage.getItem("hit") ||
+      this.cells[y][x] === localStorage.getItem("sunk");
+
     return result;
   }
 }

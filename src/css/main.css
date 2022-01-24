@@ -10,9 +10,10 @@ body {
 
 .wrapper {
   margin-top: 40px;
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
-  gap: 20px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 
 .wrapper .wrapper-list-ships {
@@ -32,34 +33,40 @@ body {
 .wrapper .wrapper-list-ships .ship-list li {
   list-style: none;
 }
+.wrapper .wrapper-list-ships .ship-list .placing {
+  font-weight: bold;
+}
+.wrapper .wrapper-list-ships .ship-list .placed {
+  display: none;
+}
 
 .wrapper .wrapper-list-ships .ship-list:hover {
   cursor: pointer;
 }
 
-.wrapper #start-game {
+.wrapper .btn {
   padding: 3px 10px;
   border-radius: 5px;
   background-color: red;
 }
-.wrapper #start-game:hover {
+.wrapper .btn:hover {
   cursor: pointer;
   background-color: green;
 }
-.wrapper .direction {
+/* .wrapper .direction {
   padding: 3px 10px;
   border-radius: 5px;
   background-color: red;
-}
-.wrapper .direction:hover {
+} */
+/* .wrapper .direction:hover {
   cursor: pointer;
   background-color: green;
-}
+} */
 .wrapper .field {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 20px;
+  margin: 60px;
 }
 .wrapper .field h2 {
   display: block;

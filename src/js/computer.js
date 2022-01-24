@@ -9,7 +9,6 @@ class Computer {
   isSunkShipAreaCell(x, y) {
     for (let coord of Computer.sunkShipsAreaCoords) {
       if (coord.xPos === x && coord.yPos === y) {
-        console.log("opps");
         return true;
       }
     }
@@ -98,6 +97,10 @@ class Computer {
 
       if (this.isSunkShipAreaCell(x, y)) {
         continue;
+      }
+      if (x === null || y === null) {
+        x = getRandom(0, 9);
+        y = getRandom(0, 9);
       }
       result = this.game.shoot(x, y, localStorage.getItem("player"));
 
