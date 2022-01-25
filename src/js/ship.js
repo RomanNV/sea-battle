@@ -3,7 +3,6 @@ import Field from "./fields.js";
 class Ship {
   constructor(type, playerField, player) {
     this.shipLength = +localStorage.getItem(`${type}`);
-    this.shipList = JSON.parse(localStorage.getItem("numberOfAvailableShips"));
     this.type = type;
     this.playerField = playerField;
     this.player = player;
@@ -53,20 +52,20 @@ class Ship {
       return y + this.shipLength <= 10;
     }
   }
-  //метод получения ссылок на массивы поля где стоит корабль
+  //метод получения ссылок на массивы поля где стоит корабль чтобы затем использовать для модификации исходного поля
   getTheArrayOfCellAroundShip(x, y, direction) {
-    let arrVertical = [];
+    let result = [];
     if (Ship.verticalDirection === direction) {
       for (let i = -1; i < this.shipLength + 1; i++) {
-        arrVertical.push(this.playerField.cells[y + i]);
+        result.push(this.playerField.cells[y + i]);
       }
-      return arrVertical;
+      return result;
     }
     if (Ship.horizontalDirection === direction) {
       for (let i = -1; i < 2; i++) {
-        arrVertical.push(this.playerField.cells[y + i]);
+        result.push(this.playerField.cells[y + i]);
       }
-      return arrVertical;
+      return result;
     }
   }
   //метод  апргрейда матрицы поля боя когда помещаем корабль на поля боя

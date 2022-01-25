@@ -5,7 +5,7 @@ class Computer {
     this.game = game;
     this.hasDamagedShip = false;
   }
-
+  //если рандомно выбраны координаты компьютерем, метод проверяет координаты не заняты ли кораблем или вокруг корабля
   isSunkShipAreaCell(x, y) {
     for (let coord of Computer.sunkShipsAreaCoords) {
       if (coord.xPos === x && coord.yPos === y) {
@@ -14,7 +14,7 @@ class Computer {
     }
     return false;
   }
-
+  //метод получения массива координат вокруг ячейки если мы попали в корабль или потопили
   getCellsAround(x, y) {
     let cells = [
       { yPos: y - 1, xPos: x - 1 },
@@ -33,7 +33,7 @@ class Computer {
     });
     return cells;
   }
-
+  // выстрел компьютера
   shoot() {
     let x = null;
     let y = null;
@@ -111,10 +111,8 @@ class Computer {
             Computer.damagedShipCoordsX[i],
             Computer.damagedShipCoordsY[i]
           );
-
           Computer.sunkShipsAreaCoords.push(...cellsToPush);
         }
-
         Computer.sunkShipsAreaCoords.push(...this.getCellsAround(x, y));
         this.hasDamagedShip = false;
         Computer.damagedShipCoordsX = [];

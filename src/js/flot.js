@@ -9,13 +9,14 @@ class Flot {
     this.shipList = [];
     this.addShips();
   }
+
   addShips() {
     let shipNum = JSON.parse(localStorage.getItem("numberOfAvailableShips"));
     for (let i = 0; i < shipNum.length; i++) {
       this.shipList.push(new Ship(shipNum[i], this.playerField, this.player));
     }
   }
-
+  //метод расстановки корабля на поле боя
   placeTheShip(x, y, direction, shipType) {
     let shipCoords = null;
 
@@ -28,7 +29,7 @@ class Flot {
           this.playerField.updateCell(
             shipCoord.x,
             shipCoord.y,
-            "ship",
+            "shipCell",
             this.player
           );
         }
@@ -62,7 +63,7 @@ class Flot {
               this.playerField.updateCell(
                 shipCoord.x,
                 shipCoord.y,
-                "ship",
+                "shipCell",
                 this.player
               );
             }

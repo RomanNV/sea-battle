@@ -3,7 +3,6 @@ class Field {
     this.size = size;
     this.cells = [];
     this.init();
-    console.log(this.cells);
   }
   init() {
     for (let i = 0; i < this.size; i++) {
@@ -14,6 +13,7 @@ class Field {
       }
     }
   }
+  //модификация поля при клике на клетку в зависимости от результата
   updateCell(x, y, type, player) {
     let target;
     if (player == localStorage.getItem("player")) {
@@ -22,31 +22,25 @@ class Field {
       target = "computer-grid";
     }
 
-    if (type !== "ship") {
-      this.cells[y][x] = localStorage.getItem(`${type}`);
-      document
-        .querySelector(`.${target} [x="${x}"][y="${y}"]`)
-        .classList.add(`field-${type}`);
-    }
-
+    this.cells[y][x] = localStorage.getItem(`${type}`);
     document
-      .querySelector(`.${target} [y="${y}"][x="${x}"]`)
+      .querySelector(`.${target} [x="${x}"][y="${y}"]`)
       .classList.add(`field-${type}`);
   }
+  //модификация поля если мы промахнулись
   isMiss(x, y) {
     return this.cells[y][x] === localStorage.getItem("miss");
   }
-
+  //модификация если мы попали по кораблю но он не потоплен
   isUndamagedShip(x, y) {
     return this.cells[y][x] === localStorage.getItem("shipCell");
   }
-
+  //проверка если мы кликаем на уже подбитый корабль или на клетку где произошло попадание
   isDamagedShip(x, y) {
-    let result =
+    return (
       this.cells[y][x] === localStorage.getItem("hit") ||
-      this.cells[y][x] === localStorage.getItem("sunk");
-
-    return result;
+      this.cells[y][x] === localStorage.getItem("sunk")
+    );
   }
 }
 

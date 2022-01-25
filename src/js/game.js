@@ -150,6 +150,8 @@ class Game {
     }
   }
 
+  // обработчик для расстановки кораблей при клике, если удачно то обнавляем служебные данные
+  // также проверяем все ли расставлены корабли и если да, то показываем кнопку старт
   placingHandler(event) {
     if (this.placeShipOnField) {
       const x = parseInt(event.target.getAttribute("x"), 10);
@@ -213,7 +215,7 @@ class Game {
     this.readyToPlay = true;
     document.querySelector(".wrapper-list-ships").classList.add("hidden");
   }
-
+  //обработчик на выстрел в зависимости от результата и если игра не окончена, то стреляю я или ход передается компьютеру
   shootHandler(event) {
     if (!this.readyToPlay) return;
 
@@ -226,17 +228,15 @@ class Game {
       this.robot.shoot();
     }
   }
-
+  // проверка конец ли игры? также переключаем флаги чтобы нельзя было взаимодействовать с полем после завершения игры
   checkForGameOver() {
     if (this.computerFlot.areAllShipsSunk()) {
       alert("Поздравляю, вы победили!");
       Game.gameOver = true;
-
       this.readyToPlay = false;
     } else if (this.playerFlot.areAllShipsSunk()) {
       alert("К сожалению, вы проиграли. Компьютер потопил все ваши корабли");
       Game.gameOver = true;
-
       this.readyToPlay = false;
     }
   }
@@ -283,7 +283,5 @@ Game.gameOver = false;
 Game.placingShipType = "";
 Game.plaseShipDirection = null;
 Game.placeShipCoords = [];
-
 let game = new Game();
-
 export default Game;
