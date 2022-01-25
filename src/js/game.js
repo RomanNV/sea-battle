@@ -8,6 +8,20 @@ let data = new Data();
 
 class Game {
   constructor() {
+    this.placingHandler = this.placingHandler.bind(this);
+    this.shipListOnClickHandler = this.shipListOnClickHandler.bind(this);
+    this.positioningMouseoutHandler =
+      this.positioningMouseoutHandler.bind(this);
+    this.shootHandler = this.shootHandler.bind(this);
+    this.positioningMouseoverHandler =
+      this.positioningMouseoverHandler.bind(this);
+    this.rotateShipSpaceKey = this.rotateShipSpaceKey.bind(this);
+    this.randomPlaceShips = this.randomPlaceShips.bind(this);
+    this.startGameHandler = this.startGameHandler.bind(this);
+    this.init();
+  }
+
+  init() {
     this.size = 10;
     this.player = localStorage.getItem("player");
     this.computer = localStorage.getItem("computer");
@@ -18,10 +32,54 @@ class Game {
     this.placeShipOnField = false;
     this.readyToPlay = false;
     this.insertDivOnField();
-    this.init();
     this.direction_1 = 0;
     this.robot = new Computer(this);
+    this.computerFlot.placeShipsRandom();
+    this.setupEventListeneres();
   }
+
+  setupEventListeneres() {
+    const shipList = document.querySelector(".ship-list");
+    const playerofField = document.querySelector(".player-grid");
+    const computerofField = document.querySelector(".computer-grid");
+
+    playerofField.addEventListener("click", (e) => {
+      if (e.target.classList.contains("cell")) {
+        this.placingHandler(e);
+      }
+    });
+    playerofField.addEventListener("mouseover", (e) => {
+      if (e.target.classList.contains("cell")) {
+        this.positioningMouseoverHandler(e);
+      }
+    });
+    playerofField.addEventListener("mouseout", (e) => {
+      if (e.target.classList.contains("cell")) {
+        this.positioningMouseoutHandler(e);
+      }
+    });
+
+    computerofField.addEventListener("click", (e) => {
+      if (e.target.classList.contains("cell")) {
+        this.shootHandler(e);
+      }
+    });
+
+    shipList.addEventListener("click", (e) => {
+      if (Game.availableShip.includes(e.target.id)) {
+        this.shipListOnClickHandler(e);
+      }
+    });
+    document.getElementById("randomBtn");
+    randomBtn.addEventListener("click", this.randomPlaceShips);
+
+    document
+      .querySelector("#start-game")
+      .addEventListener("click", this.startGameHandler);
+
+    document.addEventListener("keydown", this.rotateShipSpaceKey);
+  }
+
   //разобьем поле боя на клетки с координатами x и y
   insertDivOnField() {
     document.querySelectorAll(".grid").forEach((field) => {
@@ -114,7 +172,6 @@ class Game {
         this.placeShipOnField = false;
         if (this.areAllShipsPlaced()) {
           document.getElementById("start-game").classList.remove("hidden");
-          document.getElementById("start-game").classList.add("btn-center");
           document.getElementById("message").classList.add("hidden");
         }
       }
@@ -149,7 +206,6 @@ class Game {
     this.playerFlot.placeShipsRandom(this.player);
     document.getElementById("randomBtn").classList.add("hidden");
     document.getElementById("start-game").classList.remove("hidden");
-    document.getElementById("start-game").classList.add("btn-center");
     document.querySelector(".ship-list").classList.add("hidden");
   }
   //обработчик на кнопку старт
@@ -221,41 +277,8 @@ class Game {
       return result;
     }
   }
-
-  init() {
-    let ListOfPlayerGrid = document.querySelectorAll(".player-grid .cell");
-    ListOfPlayerGrid.forEach((cell) => {
-      cell.addEventListener("click", this.placingHandler.bind(this));
-      cell.addEventListener(
-        "mouseover",
-        this.positioningMouseoverHandler.bind(this)
-      );
-      cell.addEventListener(
-        "mouseout",
-        this.positioningMouseoutHandler.bind(this)
-      );
-    });
-
-    document.querySelectorAll("li").forEach((ship) => {
-      ship.addEventListener("click", this.shipListOnClickHandler.bind(this));
-    });
-
-    document.getElementById("randomBtn");
-    randomBtn.addEventListener("click", this.randomPlaceShips.bind(this));
-
-    document
-      .querySelector("#start-game")
-      .addEventListener("click", this.startGameHandler.bind(this));
-
-    document.addEventListener("keydown", this.rotateShipSpaceKey.bind(this));
-
-    document.querySelectorAll(".computer-grid .cell").forEach((cell) => {
-      cell.addEventListener("click", this.shootHandler.bind(this));
-    });
-
-    this.computerFlot.placeShipsRandom();
-  }
 }
+Game.availableShip = JSON.parse(localStorage.getItem("numberOfAvailableShips"));
 Game.gameOver = false;
 Game.placingShipType = "";
 Game.plaseShipDirection = null;
