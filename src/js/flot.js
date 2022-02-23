@@ -11,7 +11,7 @@ class Flot {
   }
 
   addShips() {
-    let shipNum = JSON.parse(localStorage.getItem("numberOfAvailableShips"));
+    let shipNum = Game.availableShip;
     for (let i = 0; i < shipNum.length; i++) {
       this.shipList.push(new Ship(shipNum[i], this.playerField, this.player));
     }
@@ -57,7 +57,7 @@ class Flot {
           ship.createShip(x, y, direction, false);
           ship.updateCellWhenShipPlace(x, y, direction);
           flag = false;
-          if (player == localStorage.getItem("player")) {
+          if (player == Game.player) {
             shipCoords = ship.coordsShipCells();
             for (let shipCoord of shipCoords) {
               this.playerField.updateCell(

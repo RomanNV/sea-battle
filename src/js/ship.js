@@ -1,8 +1,10 @@
-import Field from "./fields.js";
+import Game from "./game.js";
 
 class Ship {
+  static verticalDirection = 0;
+  static horizontalDirection = 1;
   constructor(type, playerField, player) {
-    this.shipLength = +localStorage.getItem(`${type}`);
+    this.shipLength = +Game.dataGame[type];
     this.type = type;
     this.playerField = playerField;
     this.player = player;
@@ -21,17 +23,15 @@ class Ship {
     for (let i = 0; i < this.shipLength; i++) {
       if (direction === Ship.verticalDirection) {
         if (
-          this.playerField.cells[_y][x] ===
-            localStorage.getItem("blockedCell") ||
-          this.playerField.cells[_y][x] === localStorage.getItem("shipCell")
+          this.playerField.cells[_y][x] === Game.dataGame.blockedCell ||
+          this.playerField.cells[_y][x] === Game.dataGame.shipCell
         ) {
           return false;
         }
       } else {
         if (
-          this.playerField.cells[y][_x] ===
-            localStorage.getItem("blockedCell") ||
-          this.playerField.cells[y][_x] === localStorage.getItem("shipCell")
+          this.playerField.cells[y][_x] === Game.dataGame.blockedCell ||
+          this.playerField.cells[y][_x] === Game.dataGame.shipCell
         ) {
           return false;
         }
@@ -81,28 +81,28 @@ class Ship {
     if (Ship.verticalDirection === direction) {
       arr.forEach((elem) => {
         if (elem[x + 1]) {
-          elem[x + 1] = localStorage.getItem("blockedCell");
+          elem[x + 1] = Game.dataGame.blockedCell;
         }
         if (elem[x - 1]) {
-          elem[x - 1] = localStorage.getItem("blockedCell");
+          elem[x - 1] = Game.dataGame.blockedCell;
         }
         if (elem[x] != 2) {
-          elem[x] = localStorage.getItem("blockedCell");
-          elem[x] = localStorage.getItem("blockedCell");
+          elem[x] = Game.dataGame.blockedCell;
+          elem[x] = Game.dataGame.blockedCell;
         }
       });
     } else {
       arr.forEach((elem) => {
         if (elem[x] != 2) {
           for (let i = 0; i < this.shipLength; i++) {
-            elem[x + i] = localStorage.getItem("blockedCell");
+            elem[x + i] = Game.dataGame.blockedCell;
           }
         }
         if (elem[x - 1]) {
-          elem[x - 1] = localStorage.getItem("blockedCell");
+          elem[x - 1] = Game.dataGame.blockedCell;
         }
         if (elem[x + this.shipLength]) {
-          elem[x + this.shipLength] = localStorage.getItem("blockedCell");
+          elem[x + this.shipLength] = Game.dataGame.blockedCell;
         }
       });
     }
@@ -118,9 +118,9 @@ class Ship {
     if (!flag) {
       for (let i = 0; i < this.shipLength; i++) {
         if (this.direction === Ship.verticalDirection) {
-          this.playerField.cells[y + i][x] = localStorage.getItem("shipCell");
+          this.playerField.cells[y + i][x] = Game.dataGame.shipCell;
         } else if (this.direction === Ship.horizontalDirection) {
-          this.playerField.cells[y][x + i] = localStorage.getItem("shipCell");
+          this.playerField.cells[y][x + i] = Game.dataGame.shipCell;
         }
       }
     }
@@ -171,12 +171,10 @@ class Ship {
 
     if (this.isSunk()) {
       this.sinkShip();
-      return localStorage.getItem("sunk");
+      return Game.dataGame.sunk;
     }
-    return localStorage.getItem("hit");
+    return Game.dataGame.hit;
   }
 }
 
-Ship.verticalDirection = 0;
-Ship.horizontalDirection = 1;
 export default Ship;

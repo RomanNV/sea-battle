@@ -39,7 +39,7 @@ class Computer {
     let y = null;
     let result = null;
 
-    while (Game.gameOver === false && result !== localStorage.getItem("miss")) {
+    while (Game.gameOver === false && result !== Game.dataGame.miss) {
       if (this.hasDamagedShip) {
         let randomDirection = null;
         let randomValue = null;
@@ -101,11 +101,11 @@ class Computer {
         x = getRandom(0, 9);
         y = getRandom(0, 9);
       }
-      result = this.game.shoot(x, y, localStorage.getItem("player"));
+      result = this.game.shoot(x, y, Game.player);
 
-      if (result === localStorage.getItem("hit")) {
+      if (result === Game.dataGame.hit) {
         this.hasDamagedShip = true;
-      } else if (result === localStorage.getItem("sunk")) {
+      } else if (result === Game.dataGame.sunk) {
         for (let i = 0; i < Computer.damagedShipCoordsX.length; i++) {
           let cellsToPush = this.getCellsAround(
             Computer.damagedShipCoordsX[i],

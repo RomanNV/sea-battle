@@ -1,12 +1,50 @@
-import Data from "./data.js";
 import Field from "./fields.js";
 import Flot from "./flot.js";
 import Computer from "./computer.js";
 
 //загрузка служебных файлов
-let data = new Data();
 
 class Game {
+  static player = "0";
+  static computer = "1";
+  static placeShipOnField = false;
+  static readyToPlay = false;
+  static direction_1 = 0;
+  static availableShip = [
+    "linkor",
+    "fregat_1",
+    "fregat_2",
+    "galera_1",
+    "galera_2",
+    "galera_3",
+    "kater_1",
+    "kater_2",
+    "kater_3",
+    "kater_4",
+  ];
+  static gameOver = false;
+  static placingShipType = "";
+  static plaseShipDirection = null;
+  static placeShipCoords = [];
+  static dataGame = {
+    blockedCell: "-1",
+    emptyCell: "0",
+    miss: "1",
+    shipCell: "2",
+    hit: "3",
+    sunk: "4",
+    linkor: "4",
+    fregat_1: "3",
+    fregat_2: "3",
+    galera_1: "2",
+    galera_2: "2",
+    galera_3: "2",
+    kater_1: "1",
+    kater_2: "1",
+    kater_3: "1",
+    kater_4: "1",
+  };
+
   constructor() {
     this.placingHandler = this.placingHandler.bind(this);
     this.shipListOnClickHandler = this.shipListOnClickHandler.bind(this);
@@ -23,8 +61,8 @@ class Game {
 
   init() {
     this.size = 10;
-    this.player = localStorage.getItem("player");
-    this.computer = localStorage.getItem("computer");
+    this.player = Game.player;
+    this.computer = Game.computer;
     this.fieldPlayer = new Field(this.size);
     this.fieldComputer = new Field(this.size);
     this.playerFlot = new Flot(this.fieldPlayer, this.player);
@@ -106,12 +144,12 @@ class Game {
     });
     Game.placingShipType = event.target.getAttribute("id");
     document.querySelector(`#${Game.placingShipType}`).classList.add("placing");
-    this.placeShipOnField = true;
+    Game.placeShipOnField = true;
   }
 
   //метод для отрисовки корабля при наведении на поле боя при расстановке корабля
   positioningMouseoverHandler(event) {
-    if (this.placeShipOnField) {
+    if (Game.placeShipOnField) {
       const x = parseInt(event.target.getAttribute("x"), 10);
       const y = parseInt(event.target.getAttribute("y"), 10);
       const fleetList = this.playerFlot.shipList;
@@ -119,9 +157,9 @@ class Game {
       for (let ship of fleetList) {
         if (
           Game.placingShipType === ship.type &&
-          ship.isNormalPosition(x, y, this.direction_1)
+          ship.isNormalPosition(x, y, Game.direction_1)
         ) {
-          ship.createShip(x, y, this.direction_1, true);
+          ship.createShip(x, y, Game.direction_1, true);
           Game.placeShipCoords = ship.coordsShipCells();
 
           for (let coord of Game.placeShipCoords) {
@@ -139,7 +177,7 @@ class Game {
   }
 
   positioningMouseoutHandler() {
-    if (this.placeShipOnField) {
+    if (Game.placeShipOnField) {
       for (let coord of Game.placeShipCoords) {
         let cell = document.querySelector(`[x="${coord.x}"][y="${coord.y}"]`);
 
@@ -153,14 +191,14 @@ class Game {
   // обработчик для расстановки кораблей при клике, если удачно то обнавляем служебные данные
   // также проверяем все ли расставлены корабли и если да, то показываем кнопку старт
   placingHandler(event) {
-    if (this.placeShipOnField) {
+    if (Game.placeShipOnField) {
       const x = parseInt(event.target.getAttribute("x"), 10);
       const y = parseInt(event.target.getAttribute("y"), 10);
 
       const successful = this.playerFlot.placeTheShip(
         x,
         y,
-        this.direction_1,
+        Game.direction_1,
         Game.placingShipType
       );
 
@@ -168,10 +206,10 @@ class Game {
         document
           .getElementById(`${Game.placingShipType}`)
           .classList.add("placed");
-        this.direction_1 = 0;
+        Game.direction_1 = 0;
         Game.placingShipType = "";
         Game.placeShipCoords = [];
-        this.placeShipOnField = false;
+        Game.placeShipOnField = false;
         if (this.areAllShipsPlaced()) {
           document.getElementById("start-game").classList.remove("hidden");
           document.getElementById("message").classList.add("hidden");
@@ -196,10 +234,10 @@ class Game {
 
   //добавил возможность изменения положения корабля при нажатии на пробел
   rotateShipSpaceKey(event) {
-    if (this.placeShipOnField && event.code === "Space") {
-      if (this.direction_1 === 0) {
-        this.direction_1 = 1;
-      } else this.direction_1 = 0;
+    if (Game.placeShipOnField && event.code === "Space") {
+      if (Game.direction_1 === 0) {
+        Game.direction_1 = 1;
+      } else Game.direction_1 = 0;
     }
   }
 
@@ -212,19 +250,19 @@ class Game {
   }
   //обработчик на кнопку старт
   startGameHandler(event) {
-    this.readyToPlay = true;
+    Game.readyToPlay = true;
     document.querySelector(".wrapper-list-ships").classList.add("hidden");
   }
   //обработчик на выстрел в зависимости от результата и если игра не окончена, то стреляю я или ход передается компьютеру
   shootHandler(event) {
-    if (!this.readyToPlay) return;
+    if (!Game.readyToPlay) return;
 
     const x = parseInt(event.target.getAttribute("x"), 10);
     const y = parseInt(event.target.getAttribute("y"), 10);
 
-    const result = this.shoot(x, y, localStorage.getItem("computer"));
+    const result = this.shoot(x, y, Game.computer);
 
-    if (!Game.gameOver && result === localStorage.getItem("miss")) {
+    if (!Game.gameOver && result === Game.dataGame.miss) {
       this.robot.shoot();
     }
   }
@@ -237,7 +275,7 @@ class Game {
     } else if (this.playerFlot.areAllShipsSunk()) {
       alert("К сожалению, вы проиграли. Компьютер потопил все ваши корабли");
       Game.gameOver = true;
-      this.readyToPlay = false;
+      Game.readyToPlay = false;
     }
   }
 
@@ -247,10 +285,10 @@ class Game {
     let targetFleet = null;
     let result = null;
 
-    if (targetPlayer === localStorage.getItem("player")) {
+    if (targetPlayer === Game.player) {
       targetGrid = this.fieldPlayer;
       targetFleet = this.playerFlot;
-    } else if (targetPlayer === localStorage.getItem("computer")) {
+    } else if (targetPlayer === Game.computer) {
       targetGrid = this.fieldComputer;
       targetFleet = this.computerFlot;
     }
@@ -262,10 +300,7 @@ class Game {
       result = targetFleet.findShipByCoords(x, y).incrementDamage();
       this.checkForGameOver();
       //добавляем координаты х и у при попадании компьютера по кораблю игрока, для логики добивания
-      if (
-        targetPlayer === localStorage.getItem("player") &&
-        result === localStorage.getItem("hit")
-      ) {
+      if (targetPlayer === Game.player && result === Game.dataGame.hit) {
         Computer.damagedShipCoordsX.push(x);
         Computer.damagedShipCoordsY.push(y);
       }
@@ -273,15 +308,10 @@ class Game {
       return result;
     } else {
       targetGrid.updateCell(x, y, "miss", targetPlayer);
-      result = localStorage.getItem("miss");
+      result = Game.dataGame.miss;
       return result;
     }
   }
 }
-Game.availableShip = JSON.parse(localStorage.getItem("numberOfAvailableShips"));
-Game.gameOver = false;
-Game.placingShipType = "";
-Game.plaseShipDirection = null;
-Game.placeShipCoords = [];
-let game = new Game();
+
 export default Game;
